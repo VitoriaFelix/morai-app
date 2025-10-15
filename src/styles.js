@@ -1,0 +1,3 @@
+import { StyleSheet } from 'react-native';
+export const colors={blue:'#3FA9F5',green:'#A5D6A7',text:'#333333',muted:'#666666',white:'#FFFFFF'};
+export const gstyles=StyleSheet.create({container:{flex:1,padding:16,backgroundColor:colors.white},h1:{fontSize:26,fontWeight:'700',color:colors.text,marginBottom:8},h2:{fontSize:20,fontWeight:'700',color:colors.text,marginBottom:8},p:{fontSize:16,color:colors.muted,marginBottom:12},input:{borderWidth:1,borderColor:'#e5e5e5',padding:12,borderRadius:12,marginBottom:10},btn:{padding:14,borderRadius:16,alignItems:'center',marginTop:8},btnPrimary:{backgroundColor:colors.blue},btnTextPrimary:{color:'#fff',fontWeight:'700'},card:{borderWidth:1,borderColor:'#eee',borderRadius:16,padding:14,marginBottom:10}});
