@@ -1,30 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { api } from '../api';
-import { gstyles } from '../styles';
+import { useNavigation } from '@react-navigation/native';
+import { useSession } from '../auth/useSession';
 
-export default function Dashboard({ navigation }) {
-  const [me, setMe] = useState(null);
-  useEffect(()=>{ api.get('/me').then(r=>setMe(r.data)).catch(()=>{}); }, []);
+export default function Dashboard() {
+  const { me, loading } = useSession();
+  const navigation = useNavigation();
 
-  async function logout(){ await AsyncStorage.removeItem('token'); navigation.replace('Login'); }
+  if (loading) return <Text style={{ padding: 16 }}>Carregando...</Text>;
 
-  const Card = ({ title, onPress }) => (
-    <TouchableOpacity onPress={onPress} style={[gstyles.card, {backgroundColor:'#fff'}]}>
-      <Text style={gstyles.h2}>{title}</Text>
-      <Text style={gstyles.p}>Acessar</Text>
-    </TouchableOpacity>
-  );
+  async function handleLogout() {
+    await AsyncStorage.removeItem('token');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Auth' }],
+    });
+  }
 
   return (
-    <View style={gstyles.container}>
-      <Text style={gstyles.h1}>Olá, {me?.name || 'usuário'} 👋</Text>
-      <Text style={gstyles.p}>Escolha um módulo para começar</Text>
-      <Card title="Comunicados" onPress={()=>navigation.navigate('Announcements')} />
-      <Card title="Reservas" onPress={()=>navigation.navigate('Reservations')} />
-      <Card title="Financeiro" onPress={()=>navigation.navigate('Finance')} />
-      <TouchableOpacity style={[gstyles.btn, {borderWidth:1, borderColor:'#e5e5e5'}]} onPress={logout}><Text>Sair</Text></TouchableOpacity>
+    <View style={{ flex: 1, padding: 16, justifyContent: 'space-between' }}>
+      <View>
+        <Text style={{ fontSize: 22, fontWeight: '700' }}>
+          Olá, {me?.name || 'usuário'} 👋
+        </Text>
+        <Text style={{ marginTop: 8 }}>
+          Perfil: {me?.roles?.join(', ') || '...'}
+        </Text>
+      </View>
+
+      <TouchableOpacity
+        onPress={handleLogout}
+        style={{
+          backgroundColor: '#FF5A5F',
+          padding: 14,
+          borderRadius: 14,
+          alignItems: 'center',
+          marginBottom: 30,
+        }}
+      >
+        <Text style={{ color: '#fff', fontWeight: '700' }}>Sair</Text>
+      </TouchableOpacity>
     </View>
   );
 }

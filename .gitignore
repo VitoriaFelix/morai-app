@@ -1,0 +1,38 @@
+# 📦 Node modules
+node_modules/
+
+# 🧰 Build / Output
+.expo/
+.expo-shared/
+dist/
+build/
+web-build/
+
+# 🧪 Test coverage / logs
+coverage/
+*.log
+
+# ⚙️ Environment files
+.env
+.env.local
+.env.*.local
+
+# 🧠 VSCode / IDE
+.vscode/
+.idea/
+.DS_Store
+
+# 📱 Android / iOS builds (se um dia ejectar)
+android/
+ios/
+
+# 🔄 System files
+Thumbs.db
+*.iml
+
+# 🚀 Expo cache / Metro cache
+.expo/*
+.expo-shared/*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

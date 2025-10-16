@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api } from '../api';
-import { gstyles } from '../styles';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('admin@morai.app');
@@ -14,7 +13,7 @@ export default function Login({ navigation }) {
       setLoading(true);
       const { data } = await api.post('/auth/login', { email, password });
       await AsyncStorage.setItem('token', data.token);
-      navigation.replace('Dashboard');
+      navigation.replace('App');
     } catch (e) {
       Alert.alert('Erro', 'Credenciais inválidas.');
     } finally {
@@ -23,15 +22,14 @@ export default function Login({ navigation }) {
   }
 
   return (
-    <View style={gstyles.container}>
-      <Text style={gstyles.h1}>Entrar</Text>
-      <Text style={gstyles.p}>Use seu e-mail e senha.</Text>
-      <TextInput style={gstyles.input} placeholder="E-mail" autoCapitalize="none" keyboardType="email-address" value={email} onChangeText={setEmail} />
-      <TextInput style={gstyles.input} placeholder="Senha" secureTextEntry value={password} onChangeText={setPassword} />
-      <TouchableOpacity style={[gstyles.btn, gstyles.btnPrimary]} onPress={handleLogin} disabled={loading}>
-        <Text style={gstyles.btnTextPrimary}>{loading ? 'Entrando...' : 'Entrar'}</Text>
+    <View style={{ padding: 16 }}>
+      <Text style={{ fontSize: 28, fontWeight:'800', marginBottom:12 }}>Entrar</Text>
+      <TextInput style={{ borderWidth:1, borderRadius:12, padding:12, marginBottom:10 }} placeholder="E-mail" autoCapitalize="none" keyboardType="email-address" value={email} onChangeText={setEmail} />
+      <TextInput style={{ borderWidth:1, borderRadius:12, padding:12, marginBottom:10 }} placeholder="Senha" secureTextEntry value={password} onChangeText={setPassword} />
+      <TouchableOpacity onPress={handleLogin} style={{ backgroundColor:'#3FA9F5', padding:14, borderRadius:14, alignItems:'center' }}>
+        <Text style={{ color:'#fff', fontWeight:'700' }}>{loading ? 'Entrando...' : 'Entrar'}</Text>
       </TouchableOpacity>
-      <Text style={{color:'#3FA9F5', fontWeight:'600', marginTop:10, textAlign:'center'}} onPress={() => navigation.navigate('Register')}>Criar conta</Text>
+      <Text onPress={()=>navigation.navigate('Register')} style={{ color:'#3FA9F5', textAlign:'center', marginTop:12 }}>Criar conta</Text>
     </View>
   );
 }
