@@ -1,26 +1,25 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { api } from '../api';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../config/firebase';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('admin@morai.app');
   const [password, setPassword] = useState('123456');
   const [loading, setLoading] = useState(false);
 
-  async function handleLogin() {
-    try {
-      setLoading(true);
-      const { data } = await api.post('/auth/login', { email, password });
-      await AsyncStorage.setItem('token', data.token);
-      navigation.replace('App');
-    } catch (e) {
-      Alert.alert('Erro', 'Credenciais inválidas.');
-    } finally {
-      setLoading(false);
-    }
+async function handleLogin() {
+  try {
+    setLoading(true);
+    await signInWithEmailAndPassword(auth, email, password);
+    navigation.replace('App');
+  } catch (e) {
+    console.error(e);
+    Alert.alert('Erro', 'Credenciais inválidas.');
+  } finally {
+    setLoading(false);
   }
-
+}
   return (
     <View style={{ padding: 16 }}>
       <Text style={{ fontSize: 28, fontWeight:'800', marginBottom:12 }}>Entrar</Text>
